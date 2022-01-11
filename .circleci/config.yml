@@ -1,17 +1,18 @@
-version: 2.1
+version: 2
 
 jobs:
-  echo:
+  build:
     docker:
       - image: cimg/base:stable
+    parameters:
+      path:
+        type: string
+      destination:
+        type: string
+        default: ""
     steps:
       - run:
-          name: Greet
-          command: echo "I love ${COLOR} builds."
-          environment:
-            COLOR: "green"
-
-workflows:
-  main:
-    jobs:
-      - echo
+          command: |
+            curl https://ramenipsum.herokuapp.com/paragraphs/1 >> ramen.txt
+      - store_artifacts:
+          path: ramen.txt
